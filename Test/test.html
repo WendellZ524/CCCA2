@@ -3,13 +3,10 @@
 
 <head>
     <meta charset='utf-8' />
-    <title>添加实时数据</title>
+    <title>可视化人口密度</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-
-
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
-
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.1/mapbox-gl.css' rel='stylesheet' />
     <style>
         body {
             margin: 0;
@@ -27,19 +24,53 @@
 
 <body>
 
-
-    <div id='map' style='width: 400px; height: 300px;'></div>
+    <div id='map'></div>
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiemVwaHlyeGYiLCJhIjoiY2tudWZ1MndmMGFyMTJ2bW0weXVtdWFxZyJ9.xV41GiWOoBQ_7jdw5FdRtg';
         var map = new mapboxgl.Map({
-            container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [-74.5, 40], // starting position [lng, lat]
-            zoom: 9 // starting zoom
+            container: 'map', // container id
+            style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+            center: [30.0222, -1.9596], // starting position [lng, lat]
+            zoom: 7 // starting zoom
+        });
+
+        map.on('load', function() {
+
+            map.addLayer({
+                'id': 'rwanda-provinces',
+                'type': 'fill',
+                'source': {
+                    'type': 'geojson',
+                    'data': 'https://docs.mapbox.com/mapbox-gl-js/assets/rwanda-provinces.geojson'
+                },
+                'layout': {},
+                'paint': {
+                    'fill-color': ["let", "density", ["/", ["get", "population"],
+                            ["get", "sq-km"]
+                        ],
+                        [
+                            "interpolate", ["linear"],
+                            ["zoom"],
+                            8, [
+                                "interpolate", ["linear"],
+                                ["var", "density"],
+                                274, ["to-color", "#edf8e9"],
+                                1551, ["to-color", "#006d2c"]
+                            ],
+                            10, [
+                                "interpolate", ["linear"],
+                                ["var", "density"],
+                                274, ["to-color", "#eff3ff"],
+                                1551, ["to-color", "#08519c"]
+                            ]
+                        ]
+                    ],
+                    'fill-opacity': .7
+                }
+            });
         });
     </script>
 
-    <button type="button" onclick="alert('Hello world!')">Click Me!</button>
 </body>
 
 </html>
