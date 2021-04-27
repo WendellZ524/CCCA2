@@ -1,5 +1,6 @@
 # Common vars
 availability_zone: melbourne-qh2-uom
+network: qh2-uom
 
 # Volume
 volumes:
