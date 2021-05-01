@@ -1,0 +1,6 @@
+# pip install -r requirements.txt
+couchdb
+tweepy
+#twint
+git+https://github.com/twintproject/twint.git@origin/master#egg=twint
+
