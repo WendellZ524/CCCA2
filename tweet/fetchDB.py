@@ -19,7 +19,7 @@ db = get_db(url, user, pw, dbname)
 print(len(db),"docs in the database")
 
 for i in range( len(db)):
-    doc = db[str(0)]
+    doc = db[str(i)]
     doc['id']
     print(str(doc['text']))
     print("*"*20)
