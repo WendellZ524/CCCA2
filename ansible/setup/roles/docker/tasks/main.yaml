@@ -1,0 +1,21 @@
+
+- name: Uninstall old versions
+  become: yes
+  apt:
+    name: ['docker','docker-engine','docker.io','runc','containerd']
+    state: absent
+
+- name: Install Docker Engine
+  become: yes
+  apt:
+    name: ['docker.io']
+    state: present
+    update_cache: yes
+
+- name: Install Docker Compose
+  become: yes
+  pip:
+    name: 'docker-compose'
+    state: latest
+
+

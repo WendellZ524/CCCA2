@@ -1,0 +1,3 @@
+volumes:
+  - location: "/dev/vdb"
+    mountpoint: "/home/ubuntu/data"

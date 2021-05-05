@@ -1,0 +1,33 @@
+- name: making file system
+  become: yes
+  filesystem:
+    fstype: ext4
+    dev: '{{ item.location }}'
+  when: item.location is defined
+  register: my_fs
+  with_items:
+    - "{{ volumes }}"
+
+- name: checking relevant folders
+  become: yes
+  stat:
+    path: '{{ item.mountpoint }}'
+  register: directory_stats
+  with_items:
+    - '{{ volumes }}'
+
+- name: creating volume directories
+  become: yes
+  file:
+    path: '{{ item.item.mountpoint }}'
+    recurse: yes
+    state: directory
+  when: item.stat.exists == false
+  with_items:
+    - "{{ directory_stats.results }}"
+
+- name: mounting volumes
+  become: yes
+  shell: |
+    mount {{ item.location }} {{ item.mountpoint }}
+  loop: "{{ volumes }}"

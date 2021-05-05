@@ -1,0 +1,19 @@
+- name: install dependencies
+  become: yes
+  apt:
+    name: ['python3-pip', 'python3-setuptools','jq']
+    state: latest
+    update_cache: yes
+
+- name: update pip
+  become: yes
+  pip:
+    name: ['pip']
+    state: latest
+
+- name: install python libararies
+  become: yes
+  pip:
+    name: ['couchdb', 'tweepy', 'git+https://github.com/twintproject/twint.git@origin/master#egg=twint']
+    state: latest
+    executable: pip3
