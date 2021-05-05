@@ -7,6 +7,7 @@
     state: latest
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
+  ignore_errors: yes
 # sudo apt-get update; sudo apt-get install python-pip
 
 - name: Update pip
