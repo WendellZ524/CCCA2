@@ -2,7 +2,7 @@
 from utils import get_db
 import os
 
-cmd = 'curl -X GET http://admin:admin:127.0.0.1:8787/'
+cmd = 'curl -X GET http://admin:admin@127.0.0.1:8787/'
 d = os.system(cmd)
 
 
