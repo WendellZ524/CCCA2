@@ -23,3 +23,7 @@ for i in range( len(db)):
     doc['id']
     print(str(doc['text']))
     print("*"*20)
+
+def fetch_data(dbname):
+    db = get_db(url, user, pw, dbname)
+    doc 
