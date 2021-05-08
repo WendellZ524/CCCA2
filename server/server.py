@@ -36,7 +36,7 @@ async def recv_msg(websocket):
 
 # main logic
 # websocket和path是该函数被回调时自动传过来的，不需要自己传
-async def main_logic(websocket):
+async def main_logic(websocket,path):
     #await check_permit(websocket)
 
     await recv_msg(websocket)
