@@ -1,7 +1,12 @@
 import tweepy
 import re
 import couchdb
+import json
+import os
 from listener import CustomStreamListener
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
+from shapely.geometry.multipolygon import MultiPolygon
 
 
 def get_api(consumer_key, consumer_secret, access_token, access_token_secret):
@@ -16,9 +21,12 @@ def get_db(url, user, pw, dbname):
     couch_server = couchdb.Server(server)
     if dbname in couch_server:
         db = couch_server[dbname]
+        return db
     else:
-        db = couch_server.create(dbname)
-    return db
+        #db = couch_server.create(dbname)
+        print(dbname,"does not exist")
+        quit()
+
 
 
 def cursor_search(api, keyword, location, since, n, until=None, language='en'):
@@ -42,4 +50,21 @@ def stream_tweet(api, bounding_box, db, language=['en'], keyword=None, listener=
     stream = tweepy.Stream(api.auth, stream_listener)
     stream.filter(track=keyword, locations=bounding_box, languages=language)
 
+
+def get_city_name(coord, filepath='../data/income_geo.json'):
+    with open(filepath, 'r', encoding='utf8') as f:
+        grid_info = json.load(f)
+    names = []
+    polys = []
+    features = grid_info['features']
+    for feature in features:
+        name = feature['properties']['name']
+        poly = Polygon(feature['geometry']['coordinates'][0])
+        names.append(name)
+        polys.append(poly)
+    point = Point(coord)
+
+    for n, p in zip(names, polys):
+        if p.intersects(point):
+            return n
 

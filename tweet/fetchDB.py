@@ -2,28 +2,31 @@
 from utils import get_db
 import os
 
-cmd = 'curl -X GET http://admin:admin@127.0.0.1:5984/'
-d = os.system(cmd)
-
-
-
-
-url = 'http://127.0.0.1:5984'
-user = "admin"
-pw = "admin"
-dbname = 'newdb'
-
-db = get_db(url, user, pw, dbname)
-
-
-print(len(db),"docs in the database")
-
-for i in range( len(db)):
-    doc = db[str(i)]
-    doc['id']
-    print(str(doc['text']))
-    print("*"*20)
 
 def fetch_data(dbname):
-    db = get_db(url, user, pw, dbname)
-    doc 
+
+    #cmd = 'curl -X GET http://admin:admin@127.0.0.1:5984/'
+    
+    #cmd = 'curl -X GET http://admin:admin@127.0.0.1:8787/'
+    #d = os.system(cmd)
+
+    user = "admin"
+    pw = "admin"
+    try:
+        url = 'http://127.0.0.1:5984'
+        db = get_db(url, user, pw, dbname)
+    except :
+        print("access from local machine")
+        url = 'http://127.0.0.1:8787'
+        db = get_db(url, user, pw, dbname)
+    print(len(db),"docs in the database")
+    datas = []
+    if dbname == 'incomedb':
+        for doc in  db.view('textsearch/locationCounter',warpper='location',group=True):
+            locatoin = doc.key['location']
+            value = doc.value
+            #print(locatoin,value)
+            datas.append((locatoin,value))
+    return datas
+
+
