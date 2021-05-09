@@ -68,6 +68,3 @@ def get_city_name(coord, filepath='../data/income_geo.json'):
         if p.intersects(point):
             return n
 
-
-
-print(get_city_name((133.88362, -23.69748)))
