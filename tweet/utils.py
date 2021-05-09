@@ -16,9 +16,12 @@ def get_db(url, user, pw, dbname):
     couch_server = couchdb.Server(server)
     if dbname in couch_server:
         db = couch_server[dbname]
+        return db
     else:
-        db = couch_server.create(dbname)
-    return db
+        #db = couch_server.create(dbname)
+        print(dbname,"does not exist")
+        quit()
+
 
 
 def cursor_search(api, keyword, location, since, n, until=None, language='en'):
