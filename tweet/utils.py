@@ -22,8 +22,9 @@ def get_db(url, user, pw, dbname):
     if dbname in couch_server:
         db = couch_server[dbname]
         return db
-    else:
+    elif dbname not in couch_server:
         #db = couch_server.create(dbname)
+        print(couch_server)
         print(dbname,"does not exist")
         quit()
 
@@ -68,3 +69,14 @@ def get_city_name(coord, filepath='../data/income_geo.json'):
         if p.intersects(point):
             return n
 
+def loginDB(dbname):
+    user = "admin"
+    pw = "admin"
+    try:
+        url = 'http://127.0.0.1:5984'
+        db = get_db(url, user, pw, dbname)
+    except :
+        print("access from local machine")
+        url = 'http://127.0.0.1:8787'
+        db = get_db(url, user, pw, dbname)
+    return db
