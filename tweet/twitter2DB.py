@@ -31,7 +31,7 @@ def check_file():
 def main():
     check_file()
     dbname=args.source
-    if args.docid == "loc_cout":
+    if args.docid == "loc_count":
         result = loc_count(dbname)
         update_db(args.target,args.docid,result)
     if args.docid == "loc_year_count":
