@@ -18,4 +18,17 @@
     name: 'docker-compose'
     state: latest
 
+- name: overwrite permission
+  become: yes
+  file:
+    path: /var/run/docker.sock
+    mode: 0666
 
+- name: restart docker
+  become: yes
+  shell: systemctl start docker
+#  systemd:
+#    enabled: yes
+#    state: restarted
+#    daemon_reload: yes
+#    name: docker
