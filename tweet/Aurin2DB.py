@@ -1,23 +1,11 @@
-from utils import loginDB
+from utils import update_db
 from readjson import load_json
+
 import os
 import json
-dbname = "aurin_db"
+dbname = "aurin_data"
 
 
-def update_db(dbname,id,doc):
-    db = loginDB(dbname)
-    try:
-        print("saving")
-        db[id] = doc
-        print("saved")
-    except Exception as e :
-        print("doc already exists try to update data")
-        data = db[id]
-        data[id] = doc
-        db.save(data)
-        print("data updated")
-        pass
 
 # read Aurin data from local, upload aurin datas to DB
 def get_aurin_json():
@@ -34,5 +22,5 @@ def get_aurin_json():
     print(theme,"uploaded ")
 
 if __name__ == '__main__':
-    #get_aurin_json()
+    get_aurin_json()
     pass

@@ -10,7 +10,7 @@ import argparse
 from fetchDB import  fetch_data
 from readjson import read_json
 from readjson import load_json
-from Aurin2DB import update_db
+from utils import update_db
 
 
 
@@ -93,8 +93,8 @@ print("upload result to database")
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--docid', help="doc id",default="loc_count")
-    parser.add_argument('--source','-s',help="twitter databse",default="db_withyear")
-    parser.add_argument('--target','-t',help="target databst",default="aurin_db")
+    parser.add_argument('--source','-s',help="twitter databse",default="tweets")
+    parser.add_argument('--target','-t',help="target databst",default="aurin_data")
     parser.add_argument('--time',type=str, default= 2021)
     args=parser.parse_args()
 
