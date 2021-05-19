@@ -1,13 +1,14 @@
 from sys import argv
-from collect import twitterCollect
+from twitter_search import twitterCollect
 from twint_search import twintCollect
 
 '''the main function to collect tweets using twitter api'''
 
+
 location_dict={"melbourne":"-37.984361,145.023796,80km","sydney":"-33.805858,150.851091,110km",
                "adelaide":"-34.9578547,138.742948,70km"}
 
-couch_url = 'http://127.0.0.1:8787/'
+couch_url = 'http://45.113.235.27:5984/'
 # keyword list
 income = ["Mercedes", "Gucci", "Rolex", "LOUIS VUITTON", "yacht", "BMW", "Prada", "Rolls Royce"]
 
@@ -40,11 +41,3 @@ else:
     print("-"*100)
     print("Wrong collection method")
     print("Use 'twint' or 'twitter' to collect")
-
-
-
-
-
-
-# the keyword list
-# commute =["drive to work","drive commute","take bus to work","bus commute","taxi to work","uber to work","taxi commute"]

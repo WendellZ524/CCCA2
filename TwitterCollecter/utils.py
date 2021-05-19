@@ -18,7 +18,6 @@ def get_db(url, user, pw, dbname):
         db = couch_server[dbname]
     else:
         print("The input db not exist")
-        # ans=input("The input db not exist, do you want to create new one? (y/n)")
         print("Creating new db called:", dbname)
         db = couch_server.create(dbname)
     return db
@@ -32,7 +31,7 @@ def cursor_search(api, keyword, location, since, n, until=None, language='en'):
 
 def tweets_to_db(tweets, db, keyword, location):
     for twt in tweets:
-        print("location:", twt.user.location, end=" ")
+        print("location:", location, end=" ")
         print("keyword:", keyword, end=" ")
         print('tweet:', twt.text)
         doc = {"keyword": str(keyword), "location": str(location), "year":"2021","text": str(twt.text)}
@@ -44,7 +43,7 @@ def tweets_to_db(tweets, db, keyword, location):
             pass
 
 
-def stream_tweet(api, bounding_box, keyword, db, language='en', listener=CustomStreamListener):
-    stream_listener = listener(db)
+def stream_tweet(api, bounding_box, keyword, db, location,language='en', listener=CustomStreamListener):
+    stream_listener = listener(db,keyword,location,max_count=2)
     stream = tweepy.Stream(api.auth, stream_listener)
     stream.filter(track=keyword, locations=bounding_box, languages=language)

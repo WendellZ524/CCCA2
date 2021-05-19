@@ -1,0 +1,10 @@
+- name: upload front .sh file
+  become: yes
+  copy:
+    src: ./front.sh
+    dest: /home/ubuntu/front.sh
+    mode: 0777
+
+- name: create front end docker
+  become: yes
+  raw: cd /home/ubuntu; ./front.sh

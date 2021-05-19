@@ -6,12 +6,12 @@ def twitterCollect(collect_location,location_dict,couch_url,keyword_list,mode):
     search_location=None
     if collect_location in location_dict.keys():
         print("Collecting tweets from:", collect_location)
-        db_name="db_withyear"
+        db_name="tweets_test2"
         search_location=[(collect_location,location_dict[collect_location])]
     elif collect_location=="all":
         print("Collecting tweets from all areas")
-        db_name="db_withyear"
-        search_location=[(location,coordinate) for location,coordinate in location_dict.items()]
+        db_name="tweets_test2"
+        n =[(location,coordinate) for location,coordinate in location_dict.items()]
     else:
         print("The location'",collect_location,"'is not supported")
         print("Please type location from:",list(location_dict.keys()))
@@ -24,18 +24,18 @@ def twitterCollect(collect_location,location_dict,couch_url,keyword_list,mode):
     api = get_api(consumer_key, consumer_secret, access_token, access_token_secret)
     db = get_db(couch_url, db_user, db_pw, db_name)
 
-
     if mode=="search":
         for location,coordinate in search_location:
             for keyword in keyword_list:
-                tweets = cursor_search(api, keyword=keyword, location=coordinate, since=search_since, n=5)
+                tweets = cursor_search(api, keyword=keyword, location=coordinate, since=search_since, n=3)
                 tweets_to_db(tweets, db, keyword,location)
 
     elif mode == 'stream':
         for location,coordinate in search_location:
             for keyword in keyword_list:
-                tweets=stream_tweet(api, bounding_box=bounding_box,keyword=keyword,db=db)
-                tweets_to_db(tweets, db, keyword,location)
+                # added to db in the listener class
+                tweets=stream_tweet(api, bounding_box=bounding_box,keyword=keyword,db=db,location=location)
+
     else:
         print("Wrong search mode")
         print("System exiting...")
