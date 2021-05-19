@@ -1,0 +1,10 @@
+- name: upload py .sh file
+  become: yes
+  copy:
+    src: ./py.sh
+    dest: /home/ubuntu/py.sh
+    mode: 0777
+
+- name: create python env
+  become: yes
+  raw: cd /home/ubuntu; ./py.sh

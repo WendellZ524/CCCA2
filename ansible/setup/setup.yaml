@@ -2,8 +2,79 @@
   vars_files:
     - host_vars/setup.yaml
   gather_facts: true
-
   roles:
     - role: mount
     - role: dependency
     - role: docker
+
+- hosts: couchdb
+  gather_facts: true
+  tasks:
+    - name: upload local .ini file
+      become: yes
+      copy:
+        src: ./local.ini
+        dest: /home/ubuntu/local.ini
+        mode: 0777
+
+- hosts: master
+  gather_facts: true
+  tasks:
+    - name: upload master .sh file
+      become: yes
+      copy:
+        src: ./master.sh
+        dest: /home/ubuntu/master.sh
+        mode: 0777
+
+    - name: upload cluster .sh file
+      become: yes
+      copy:
+        src: ./cluster.sh
+        dest: /home/ubuntu/cluster.sh
+        mode: 0777
+
+    - name: create master
+      become: yes
+      raw: cd /home/ubuntu; ./master.sh
+
+- hosts: slave1
+  tasks:
+    - name: upload slave1 .sh file
+      become: yes
+      copy:
+        src: ./slave1.sh
+        dest: /home/ubuntu/slave1.sh
+        mode: 0777
+    - name: create slave1
+      become: yes
+      raw: cd /home/ubuntu; ./slave1.sh
+
+- hosts: slave2
+  tasks:
+    - name: upload slave2 .sh file
+      become: yes
+      copy:
+        src: ./slave2.sh
+        dest: /home/ubuntu/slave2.sh
+        mode: 0777
+    - name: create slave2
+      become: yes
+      raw: cd /home/ubuntu; ./slave2.sh
+
+- hosts: couchdb
+  gather_facts: true
+  roles:
+    - role: python-env
+
+- hosts: frontend
+  gather_facts: true
+  roles:
+    - role: front
+
+- hosts: master
+  gather_facts: true
+  tasks:
+    - name: create cluster
+      become: yes
+      raw: cd /home/ubuntu; ./cluster.sh

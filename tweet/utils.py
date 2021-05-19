@@ -4,9 +4,6 @@ import couchdb
 import json
 import os
 from listener import CustomStreamListener
-from shapely.geometry import Point
-from shapely.geometry.polygon import Polygon
-from shapely.geometry.multipolygon import MultiPolygon
 
 
 def get_api(consumer_key, consumer_secret, access_token, access_token_secret):
@@ -22,8 +19,9 @@ def get_db(url, user, pw, dbname):
     if dbname in couch_server:
         db = couch_server[dbname]
         return db
-    else:
+    elif dbname not in couch_server:
         #db = couch_server.create(dbname)
+        print(couch_server)
         print(dbname,"does not exist")
         quit()
 
@@ -50,7 +48,7 @@ def stream_tweet(api, bounding_box, db, language=['en'], keyword=None, listener=
     stream = tweepy.Stream(api.auth, stream_listener)
     stream.filter(track=keyword, locations=bounding_box, languages=language)
 
-
+'''
 def get_city_name(coord, filepath='../data/income_geo.json'):
     with open(filepath, 'r', encoding='utf8') as f:
         grid_info = json.load(f)
@@ -67,4 +65,15 @@ def get_city_name(coord, filepath='../data/income_geo.json'):
     for n, p in zip(names, polys):
         if p.intersects(point):
             return n
-
+'''
+def loginDB(dbname):
+    user = "admin"
+    pw = "admin"
+    try:
+        url = 'http://127.0.0.1:5984'
+        db = get_db(url, user, pw, dbname)
+    except :
+        print("access from local machine")
+        url = 'http://127.0.0.1:8787'
+        db = get_db(url, user, pw, dbname)
+    return db

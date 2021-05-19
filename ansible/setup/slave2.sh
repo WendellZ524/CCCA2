@@ -26,4 +26,5 @@ docker create\
       ibmcom/couchdb3:${VERSION}
 
 declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n3 -d'\n'`)
-for cont in "${conts[@]}"; do docker start ${cont}; done
+for cont in "${conts[@]}"; do docker cp local.ini ${cont}:/opt/couchdb/etc/local.ini;
+docker start ${cont}; done
