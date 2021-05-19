@@ -5,12 +5,12 @@ from utils import *
 
 def twints_to_db(tweets, db , keyword,location):
     for twt in tweets:
-        doc={"keyword":str(keyword),"location":location,"year":"2020","text":str(twt["tweet"])}
+        doc={"keyword":str(keyword),"location":location,"year":"2014","text":str(twt["tweet"])}
         try:
             print("Saving to db.........")
             db[twt["id"]] = doc
         except:
-            print("error: same id")
+            print("skip: same id")
             pass
 
 def twintCollect(collect_location,location_dict,couch_url,keyword_list):
@@ -19,11 +19,11 @@ def twintCollect(collect_location,location_dict,couch_url,keyword_list):
 
     if collect_location in location_dict.keys():
         print("Collecting tweets from:", collect_location)
-        db_name="db_withyear"
+        db_name="tweets"
         search_location=[(collect_location,location_dict[collect_location])]
     elif collect_location=="all":
         print("Collecting tweets from all areas")
-        db_name="db_withyear"
+        db_name="tweets"
         search_location=[(location,coordinate) for location,coordinate in location_dict.items()]
     else:
         print("The location'",collect_location,"'is not supported")
@@ -35,10 +35,10 @@ def twintCollect(collect_location,location_dict,couch_url,keyword_list):
         for keyword in keyword_list:
             c = twint.Config()
             c.Search = keyword
-            c.Limit = 10
+            c.Limit = 300
             c.Pandas = True
-            c.Since = '2020-04-01'
-            c.Until = '2020-12-31'
+            c.Since = '2015-01-01'
+            c.Until = '2016-01-01'
 
             c.Geo=coordinate
 
