@@ -15,7 +15,7 @@ def get_aurin_json():
     print(theme,"uploaded ")
 
 
-    theme = "greater_income_goe.json"
+    theme = "greater_Income_goe2.json"
     myjson = load_json(theme)
     id = "Aurin_income"
     update_db(dbname,id,myjson)
