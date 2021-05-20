@@ -87,6 +87,7 @@ def update_db(dbname,id,doc):
     except Exception as e :
         print("doc already exists try to update data")
         data = db[id]
+        db.delete(data)
         data[id] = doc
         db.save(data)
         print("data updated")

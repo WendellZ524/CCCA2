@@ -41,7 +41,7 @@ def main():
         result = loc_year_count(dbname)
         for feature in result['features']:
             print(feature['properties']['name'],":",feature['properties']['value'])
-            print(len(feature['geometry']["coordinates"][0][0]))
+            print(len(feature['geometry']["coordinates"][0]))
         update_db(args.target,args.docid+"_"+str(args.time),result)
     #update_db(args.target,args.docid,result)
 
@@ -80,7 +80,7 @@ def loc_year_count(dbname):
         year = item[0]['year']
         value = item[1]
         if year == str(args.time):
-            if location == "sydeny":
+            if location == "sydney":
                 result['features'][0]["properties"]['value']=value
             if location == "melbourne":
                 result['features'][1]["properties"]['value']=value
