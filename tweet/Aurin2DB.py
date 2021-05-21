@@ -24,6 +24,6 @@ def get_aurin_json(theme):
         print(theme,"uploaded ")
 
 if __name__ == '__main__':
-    #get_aurin_json("greater_population_goe.json")
+    get_aurin_json("greater_population_goe.json")
     get_aurin_json("greater_Income_goe2.json")
     pass
