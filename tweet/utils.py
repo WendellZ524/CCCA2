@@ -106,8 +106,12 @@ def load_json(filename):
 
 def update_db(dbname,id,doc):
     db = loginDB(dbname)
-    data = db[id]
-    print(data.keys(),doc.keys())
+    try:
+        data = db[id]
+        print(data.keys(),doc.keys())
+    except:
+        pass
+    
     try:
         print("saving")
         db[id] = doc
