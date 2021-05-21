@@ -78,8 +78,36 @@ def loginDB(dbname):
         db = get_db(url, user, pw, dbname)
     return db
 
+def load_json(filename):
+    Greaterincome = "AurinGreaterIncome.json"
+    GreaterPopulation = "AurinPopulation.json"
+    rawGeojson = "rawGeojson.json"
+    print(filename)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    current_dir = os.path.dirname(current_dir)
+    dir = os.path.join(current_dir,"data")
+    if filename == "income":
+        filename = Greaterincome
+    elif filename == "population":
+        filename = GreaterPopulation
+    elif filename == "template":
+        with open(os.path.join(dir,filename),encoding="utf8") as jf:
+            res = json.load(jf)
+        return res
+    else:
+        pass
+    try:
+        with open(os.path.join(dir,filename),encoding="utf8") as jf:
+            res = json.load(jf)
+    except :
+        print("file {%s} does not exist",filename)
+    return res
+
+
 def update_db(dbname,id,doc):
     db = loginDB(dbname)
+    data = db[id]
+    print(data.keys(),doc.keys())
     try:
         print("saving")
         db[id] = doc
@@ -88,6 +116,9 @@ def update_db(dbname,id,doc):
         print("doc already exists try to update data")
         data = db[id]
         data[id] = doc
+        print(data.keys(),doc.keys())
+        if ('features' in data.keys()) and ('features' in doc.keys()):
+            data['features'] = doc['features']
         db.save(data)
         print("data updated")
         pass

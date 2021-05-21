@@ -8,41 +8,30 @@ import json
 import sys
 import argparse
 from fetchDB import  fetch_data
-from readjson import read_json
-from readjson import load_json
+
+from utils import load_json
 from utils import update_db
 
 
 
 files = ["rawGeojson.json"]
-#check files
-def check_file():
-    
-    for filename in files:
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        current_dir = os.path.dirname(current_dir)
-        dir = os.path.join(current_dir,"data")
-        try:
-            with open(os.path.join(dir,filename),encoding="utf8") as jf:
-                pass
-        except FileNotFoundError as ferr:
-            read_json()
+
 
 def main():
-    check_file()
     dbname=args.source
     if args.docid == "loc_count":
         result = loc_count(dbname)
         update_db(args.target,args.docid,result)
         for feature in result['features']:
             print(feature['properties']['name'],":",feature['properties']['value'])
-            print(len(feature['geometry']["coordinates"][0][0]))
+            #print(len(feature['geometry']["coordinates"][0]))
     if args.docid == "loc_year_count":
         result = loc_year_count(dbname)
+        update_db(args.target,args.docid+"_"+str(args.time),result)
         for feature in result['features']:
             print(feature['properties']['name'],":",feature['properties']['value'])
-            print(len(feature['geometry']["coordinates"][0]))
-        update_db(args.target,args.docid+"_"+str(args.time),result)
+            #print(len(feature['geometry']["coordinates"][0]))
+
     #update_db(args.target,args.docid,result)
 
 

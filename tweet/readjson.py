@@ -1,7 +1,15 @@
+'''
+this file is used to
+convert a Json file from Aurin to a Front-End Acceptable format
+by:Xiaofeng Zhang
+xiaofzhang1@student.unimelb.edu.au
+'''
+
 import json
 import time
 import os
-
+import copy
+from utils import load_json
 Greaterincome = "AurinGreaterIncome.json"
 GreaterPopulation = "AurinPopulation.json"
 rawGeojson = "rawGeojson.json"
@@ -65,7 +73,7 @@ def get_cp(points):
     cp = [x/(k+1),y/(k+1)]
     return cp
 
-
+'''
 def load_json(filename):
     print(filename)
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -87,11 +95,13 @@ def load_json(filename):
     except :
         print("file {%s} does not exist",filename)
     return res
+'''
 
+'''
 def convert_json(theme,targets,cities):
-    '''
-    load json file
-    '''
+    
+    #load json file
+    
     print("Loading files")
     time_start=time.time()
     templaet = load_json("template")
@@ -138,5 +148,66 @@ def convert_json(theme,targets,cities):
 
 
     return res
-
+'''
 #read_json()
+
+def write(template,value_dict,theme):
+    print("writing")
+    temp = copy.deepcopy(template)
+    for feature in temp['features']:
+        #get path
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        current_dir = os.path.dirname(current_dir)
+        dir = os.path.join(current_dir,"data")
+        
+        
+        name = feature['properties']['name']
+        value = value_dict[name]
+        
+        if theme == "income":
+            if 'value' in feature['properties'].keys():
+                feature['properties'].pop('value')
+            feature['properties']['income'] = value
+        elif theme == "population":
+            if 'value' in feature['properties'].keys():
+                feature['properties'].pop('value')
+            feature['properties']['population'] = value
+        else:
+            feature['properties']['value'] = value
+    print(theme,"--------------------")
+    for f in temp['features']:
+        print(f['properties'])
+    if theme == "income":
+        path = os.path.join(dir,"greater_Income_goe2.json")      
+        with open(path,"w") as t:
+            json.dump(temp,t)           
+    elif theme == "population":
+        path = os.path.join(dir,"greater_Population_goe.json")
+        with open(path,"w") as t:
+            json.dump(temp,t)  
+    
+template = load_json(rawGeojson)
+incomejson= load_json(Greaterincome)
+income_value = {}
+
+for feautre in incomejson['features']:
+    name = feautre['properties']['feature_name']
+    value = feautre['properties']['income_aud']
+    if name in cities:
+        income_value[name] = value/1E+09
+
+# print(income_value)
+populationjson= load_json(GreaterPopulation)
+
+pop_value ={}
+for f in populationjson['features']:
+    name = f['properties']['feature_name']
+    value = f['properties']['p_tot']
+    if name in cities:
+        pop_value[name]=value/1E+06
+
+# print(pop_value)
+
+write(template,income_value,"income")
+write(template,pop_value,"population")
+
