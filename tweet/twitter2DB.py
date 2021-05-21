@@ -26,7 +26,7 @@ def main():
             print(feature['properties']['name'],":",feature['properties']['value'])
             #print(len(feature['geometry']["coordinates"][0]))
     if args.docid == "loc_year_count":
-        result = loc_year_count(dbname)
+        result = loc_year_count(dbname,args.time)
         update_db(args.target,args.docid+"_"+str(args.time),result)
         for feature in result['features']:
             print(feature['properties']['name'],":",feature['properties']['value'])
@@ -36,7 +36,7 @@ def main():
 
 
 # location-count
-def loc_count(dbname):
+def loc_count(dbname="tweets"):
     view = "keywordLocationYearCounter"
     level = 3
     datas = fetch_data(dbname,view,level=1)
@@ -54,7 +54,7 @@ def loc_count(dbname):
             result['features'][2]["properties"]['value']=value
     return result
 
-def loc_year_count(dbname):
+def loc_year_count(dbname="tweets",time=2021):
 
     view = "locationYearCounter"
     level = 2
@@ -68,7 +68,7 @@ def loc_year_count(dbname):
         location = item[0]['location']
         year = item[0]['year']
         value = item[1]
-        if year == str(args.time):
+        if year == str(time):
             if location == "sydney":
                 result['features'][0]["properties"]['value']=value
             if location == "melbourne":
