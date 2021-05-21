@@ -10,7 +10,7 @@ import argparse
 from fetchDB import  fetch_data
 from readjson import read_json
 from readjson import load_json
-from Aurin2DB import update_db
+from utils import update_db
 
 
 
@@ -34,8 +34,14 @@ def main():
     if args.docid == "loc_count":
         result = loc_count(dbname)
         update_db(args.target,args.docid,result)
+        for feature in result['features']:
+            print(feature['properties']['name'],":",feature['properties']['value'])
+            print(len(feature['geometry']["coordinates"][0][0]))
     if args.docid == "loc_year_count":
         result = loc_year_count(dbname)
+        for feature in result['features']:
+            print(feature['properties']['name'],":",feature['properties']['value'])
+            print(len(feature['geometry']["coordinates"][0]))
         update_db(args.target,args.docid+"_"+str(args.time),result)
     #update_db(args.target,args.docid,result)
 
@@ -51,7 +57,7 @@ def loc_count(dbname):
     for item in datas:
         location = item[0][0]
         value = item[1]
-        if location == "sydeny":
+        if location == "sydney":
             result['features'][0]["properties"]['value']=value
         if location == "melbourne":
             result['features'][1]["properties"]['value']=value
@@ -74,7 +80,7 @@ def loc_year_count(dbname):
         year = item[0]['year']
         value = item[1]
         if year == str(args.time):
-            if location == "sydeny":
+            if location == "sydney":
                 result['features'][0]["properties"]['value']=value
             if location == "melbourne":
                 result['features'][1]["properties"]['value']=value
@@ -93,8 +99,8 @@ print("upload result to database")
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--docid', help="doc id",default="loc_count")
-    parser.add_argument('--source','-s',help="twitter databse",default="db_withyear")
-    parser.add_argument('--target','-t',help="target databst",default="aurin_db")
+    parser.add_argument('--source','-s',help="twitter databse",default="tweets")
+    parser.add_argument('--target','-t',help="target databst",default="twitter_data")
     parser.add_argument('--time',type=str, default= 2021)
     args=parser.parse_args()
 

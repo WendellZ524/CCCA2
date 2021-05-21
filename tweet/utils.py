@@ -77,3 +77,17 @@ def loginDB(dbname):
         url = 'http://127.0.0.1:8787'
         db = get_db(url, user, pw, dbname)
     return db
+
+def update_db(dbname,id,doc):
+    db = loginDB(dbname)
+    try:
+        print("saving")
+        db[id] = doc
+        print("saved")
+    except Exception as e :
+        print("doc already exists try to update data")
+        data = db[id]
+        data[id] = doc
+        db.save(data)
+        print("data updated")
+        pass

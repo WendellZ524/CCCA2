@@ -29,7 +29,8 @@ def read_json():
     Greater_income_json = convert_json(theme,targets,cities)
     theme = "population"
     Greater_population_json = convert_json(theme,targets,cities)
-    theme = "rawGeojson"
+
+    theme = "Geo.json"
     GeoJson = convert_json(theme,targets,cities)
     #print(Greater_income_json[,'features'][0]['properties'])
 
@@ -66,7 +67,7 @@ def get_cp(points):
 
 
 def load_json(filename):
-
+    print(filename)
     current_dir = os.path.dirname(os.path.abspath(__file__))
     current_dir = os.path.dirname(current_dir)
     dir = os.path.join(current_dir,"data")
@@ -74,6 +75,10 @@ def load_json(filename):
         filename = Greaterincome
     elif filename == "population":
         filename = GreaterPopulation
+    elif filename == "template":
+        with open(os.path.join(dir,filename),encoding="utf8") as jf:
+            res = json.load(jf)
+        return res
     else:
         pass
     try:
@@ -89,6 +94,7 @@ def convert_json(theme,targets,cities):
     '''
     print("Loading files")
     time_start=time.time()
+    templaet = load_json("template")
     source = load_json(theme)
     time_end=time.time()
     print(theme,"Files loaded in %d s",time_end-time_start)
@@ -96,6 +102,7 @@ def convert_json(theme,targets,cities):
     res= targets.copy()
     cps = []
     res['features']=[]
+
     for i,feature in enumerate(features):
         name = feature['properties']['feature_name']
         points = feature['geometry']['coordinates'][0]
@@ -120,7 +127,7 @@ def convert_json(theme,targets,cities):
                 {"type":"Polygon",
                 "coordinates":points}}
         # get values
-        
+        #print(name)
         # get interest cities
         if name in cities:
             res['features'].append(item)
