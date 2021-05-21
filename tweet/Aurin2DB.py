@@ -39,7 +39,7 @@ def main():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--theme', help="theme, income or population",default="income")
+    parser.add_argument('--theme', help="theme, income or population",default="all")
     parser.add_argument('--target','-t',help="target databst",default="aurin_data")
     args=parser.parse_args()
 
