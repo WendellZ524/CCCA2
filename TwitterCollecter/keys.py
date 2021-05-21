@@ -1,8 +1,8 @@
 # twitter API
-consumer_key = 'AL0RNxk8mug324M7tcRPwWS9a'
-consumer_secret = 'nDgbNliXtCLsnO5MJdipgVKEFRExKEAqlmg1JYyWszJxig6ix4'
-access_token = '1385794842307956737-ixdXaaSgo4GdkwzWZyN3PIIpbSkSpy'
-access_token_secret = 'sNJ4MR3OT7Lden43xnIVTqeCuMtTCqahqCb8h53GQqdtC'
+consumer_key = 'fTYZYwrQQfcbHuHpl2ltulQPK'
+consumer_secret = 'q20C1IIGCWNRYsVt2kynsbkG0AzBR7V4U0Y0IpbZBeFCyWa71g'
+access_token = '1385794842307956737-ZWKgQPt42x2eQw5lcEGcIjtZeVpDPJ'
+access_token_secret = 'SOQpLHKuH15hLTQM1RFo8cnv4wcUQJM8ZnMYKL6tFJSoT'
 # couchDB
 db_user = 'admin'
 db_pw = 'admin'

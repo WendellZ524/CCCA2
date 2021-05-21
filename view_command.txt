@@ -1,4 +1,3 @@
-开一个新view：
 curl -X PUT -d '{
   "_id": "_design/textsearch",
   "views": {
@@ -16,5 +15,5 @@ curl -X PUT -d '{
 }' 'http://admin:admin@127.0.0.1:8787/tweets/_design/textsearch'
 
 
-检查view创建好：
+To examine a view:
 curl -X PUT -d @db_view.js 'http://admin:admin@127.0.0.1:8787/tweets/_design/textsearch'
