@@ -10,7 +10,7 @@ dbname = "aurin_data"
 # read Aurin data from local, upload aurin datas to DB
 def get_aurin_json(theme):
 
-    if theme == "greater_population_goe.json":
+    if theme == "greater_Population_goe.json":
         myjson = load_json(theme)
         print("try to save aurin data")
         update_db(dbname,"Aurin_pop",myjson)
