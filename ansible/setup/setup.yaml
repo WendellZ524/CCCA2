@@ -9,62 +9,8 @@
 
 - hosts: couchdb
   gather_facts: true
-  tasks:
-    - name: upload local .ini file
-      become: yes
-      copy:
-        src: ./local.ini
-        dest: /home/ubuntu/local.ini
-        mode: 0777
-
-- hosts: master
-  gather_facts: true
-  tasks:
-    - name: upload master .sh file
-      become: yes
-      copy:
-        src: ./master.sh
-        dest: /home/ubuntu/master.sh
-        mode: 0777
-
-    - name: upload cluster .sh file
-      become: yes
-      copy:
-        src: ./cluster.sh
-        dest: /home/ubuntu/cluster.sh
-        mode: 0777
-
-    - name: create master
-      become: yes
-      raw: cd /home/ubuntu; ./master.sh
-
-- hosts: slave1
-  tasks:
-    - name: upload slave1 .sh file
-      become: yes
-      copy:
-        src: ./slave1.sh
-        dest: /home/ubuntu/slave1.sh
-        mode: 0777
-    - name: create slave1
-      become: yes
-      raw: cd /home/ubuntu; ./slave1.sh
-
-- hosts: slave2
-  tasks:
-    - name: upload slave2 .sh file
-      become: yes
-      copy:
-        src: ./slave2.sh
-        dest: /home/ubuntu/slave2.sh
-        mode: 0777
-    - name: create slave2
-      become: yes
-      raw: cd /home/ubuntu; ./slave2.sh
-
-- hosts: couchdb
-  gather_facts: true
   roles:
+    - role: couchdb
     - role: python-env
 
 - hosts: frontend
@@ -74,7 +20,32 @@
 
 - hosts: master
   gather_facts: true
+  roles:
+    - role: cluster
+
+- hosts: slave1
+  gather_facts: true
   tasks:
-    - name: create cluster
+    - name: start python twitter collector
       become: yes
-      raw: cd /home/ubuntu; ./cluster.sh
+      shell: docker exec python python3 TwitterCollector/main.py twitter all search
+
+- hosts: slave2
+  gather_facts: true
+  tasks:
+    - name: start python twitter collector
+      become: yes
+      shell: docker exec python python3 TwitterCollector/main.py twitter all stream
+
+- hosts: master
+  gather_facts: true
+  tasks:
+    - name: start python tweet2DB
+      become: yes
+      shell: |
+        docker exec python python3 tweet/twitter2DB.py -s tweets -t twitter_data --docid loc_year_count --time 2014
+        docker exec python python3 tweet/twitter2DB.py -s tweets -t twitter_data --docid loc_year_count --time 2019
+        docker exec python python3 tweet/twitter2DB.py -s tweets -t twitter_data --docid loc_year_count --time 2020
+        docker exec python python3 tweet/start.py
+
+
