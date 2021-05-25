@@ -1,0 +1,10 @@
+- name: upload cluster .sh file
+  become: yes
+  copy:
+    src: ./cluster.sh
+    dest: /home/ubuntu/cluster.sh
+    mode: 0777
+
+- name: create cluster
+  become: yes
+  raw: cd /home/ubuntu; ./cluster.sh "{{ ansible_host }}"

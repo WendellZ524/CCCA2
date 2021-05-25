@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-export node=45.113.235.61
-export masternode=45.113.235.61
-export size=3
+export node=$1
 export user='admin'
 export pass='admin'
 export VERSION='3.1.1'
@@ -26,5 +24,4 @@ docker create\
       ibmcom/couchdb3:${VERSION}
 
 declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n3 -d'\n'`)
-for cont in "${conts[@]}"; do docker cp local.ini ${cont}:/opt/couchdb/etc/local.ini;
-docker start ${cont}; done
+for cont in "${conts[@]}"; do docker start ${cont}; done

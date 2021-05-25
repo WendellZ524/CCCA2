@@ -11,26 +11,17 @@
     name: ['pip']
     state: latest
 
-#- name: install python libararies
-#  become: yes
-#  pip:
-#    name: ['couchdb', 'tweepy', 'git+https://github.com/twintproject/twint.git@origin/master#egg=twint',
-#    'numpy', 'websocket', 'shapely']
-#    state: latest
-#    executable: pip3
+- name: create directory for source file
+  become: yes
+  file:
+    path: /home/ubuntu/data/CCCA2
+    state: directory
 
-#- name: upload source file
-#  become: yes
-#  copy:
-#    src: ../../../../../../CCCA2
-#    dest: /home/ubuntu/data/
-#    mode: 0777
 - name: upload source file
   become: yes
   unarchive:
     src: ../../../../../src.tar.xz
     dest: /home/ubuntu/data/CCCA2/
-
 
 - name: add proxy
   become: yes

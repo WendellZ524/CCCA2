@@ -1,0 +1,28 @@
+- name: upload couchdb .sh file
+  become: yes
+  copy:
+    src: ./couchdb.sh
+    dest: /home/ubuntu/couchdb.sh
+    mode: 0777
+
+- name: upload local .ini file
+  become: yes
+  copy:
+    src: ./local.ini
+    dest: /home/ubuntu/local.ini
+    mode: 0777
+
+- name: upload add_node .sh file
+  become: yes
+  copy:
+    src: ./couchdb.sh
+    dest: /home/ubuntu/add_node.sh
+    mode: 0777
+
+- name: create couchdb
+  become: yes
+  raw: cd /home/ubuntu; ./couchdb.sh "{{ ansible_host }}"
+
+- name: add node
+  become: yes
+  raw: cd /home/ubuntu; ./add_node.sh "{{ hostvars['instance-1'].ansible_host }}" "{{ ansible_host }}" "{{ hostvars[groups['couchdb'][0]].size }}"
