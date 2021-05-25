@@ -45,12 +45,13 @@ security_groups:
     port_range_min: 9100
     port_range_max: 9200
     remote_ip_prefix: 0.0.0.0/0
-  - name: 8080
+  - name: http
     description: "http 8080"
     protocol: tcp
     port_range_min: 8080
     port_range_max: 8080
     remote_ip_prefix: 0.0.0.0/0
+
 # Instance
 instances:
   - name: instance-1
@@ -71,11 +72,4 @@ instances:
 
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
 instance_key_name: ccc_team
-#instance_flavor: uom.mse.2c9g
-#proxy
-instance_proxy:
-  - "http_proxy=\"http://wwwproxy.unimelb.edu.au:8000\""
-  - "https_proxy=\"http://wwwproxy.unimelb.edu.au:8000\""
-  - "HTTP_PROXY=\"http://wwwproxy.unimelb.edu.au:8000\""
-  - "HTTPS_PROXY=\"http://wwwproxy.unimelb.edu.au:8000\""
-  - "NO_PROXY=localhost,127.0.0.1,localaddress,172.16.0.0/12,.melbourne.rc.nectar.org.au,.storage.unimelb.edu.au,.cloud.unimelb.edu.au"
+
